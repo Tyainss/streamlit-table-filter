@@ -19,5 +19,8 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = ["pandas>=1.5.3", "streamlit>=1.40"]
 
+[project.optional-dependencies]
+polars = ["polars"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/streamlit_table_filter"]
