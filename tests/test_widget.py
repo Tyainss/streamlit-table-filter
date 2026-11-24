@@ -59,6 +59,29 @@ st.text(str(selected))
             app.dataframe[0].value["label"].tolist(), ["Soul (updated)", "Rock"]
         )
 
+    def test_dimensions_and_selection_count(self):
+        app = AppTest.from_string("""
+import streamlit as st
+from streamlit_table_filter import table_filter
+
+larger = st.checkbox("Larger table")
+selected = table_filter(
+    ["DE", "PT"], key="countries", width=300, height=250 if larger else 150
+)
+st.text(str(selected))
+""").run()
+        self.assert_selection(app, "['DE', 'PT']")
+        self.assertEqual(app.caption[0].value, "2 of 2 selected")
+        self.edit_first_table(app, {0: False})
+        self.assert_selection(app, "['PT']")
+        self.assertEqual(app.caption[0].value, "1 of 2 selected")
+        self.assert_selection(app.checkbox[0].check().run(), "['PT']")
+        self.assertEqual(app.dataframe[0].value.iloc[:, 0].tolist(), [False, True])
+        self.assert_selection(app.checkbox[1].check().run(), "['DE', 'PT']")
+        self.assertEqual(app.caption[0].value, "2 of 2 selected")
+        self.assert_selection(app.checkbox[1].uncheck().run(), "[]")
+        self.assertEqual(app.caption[0].value, "0 of 2 selected")
+
     @unittest.skipUnless(importlib.util.find_spec("polars"), "Polars is optional")
     def test_polars_returns_raw_ids(self):
         app = AppTest.from_string("""

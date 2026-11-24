@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Hashable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
@@ -17,6 +19,7 @@ class _FilterState:
     editor_key: str = ""
     editor_table: pd.DataFrame | None = None
     editor_config: dict[str, Any] | None = None
+    editor_dimensions: tuple[int | None, int | None] = (None, None)
 
 
 def reset_table_filter(key: str) -> None:
@@ -34,6 +37,8 @@ def table_filter(
     initial_selection: Sequence[Hashable] | None = None,
     column_config: Mapping[str, Any] | None = None,
     selection_label: str = "Selected",
+    width: int | None = None,
+    height: int | None = None,
 ) -> list[Hashable]:
     """Render a checkbox table and return the selected IDs in input order."""
     option_ids, display = _prepare_options(options, id_column, display_columns)
@@ -68,12 +73,15 @@ def table_filter(
     config = dict(column_config or {})
     if isinstance(options, list) and label is not None:
         config.setdefault("Value", label)
-    config[selected_column] = st.column_config.CheckboxColumn(selection_label)
+    config[selected_column] = st.column_config.CheckboxColumn(
+        selection_label, width="small"
+    )
 
     if (
         state.editor_table is None
         or state.editor_key not in st.session_state
         or state.editor_config != config
+        or state.editor_dimensions != (width, height)
         or not state.editor_table.iloc[:, 1:].equals(display)
     ):
         # Start a fresh editor when its old positional edits no longer apply.
@@ -81,6 +89,7 @@ def table_filter(
         display.insert(0, selected_column, checked)
         state.editor_table = display
         state.editor_config = config
+        state.editor_dimensions = (width, height)
         state.editor_key = f"streamlit_table_filter:editor:{key}:{uuid4().hex}"
 
     checkbox_key = f"streamlit_table_filter:select_all:{key}"
@@ -92,6 +101,12 @@ def table_filter(
         args=(state_key, checkbox_key),
     )
 
+    dimensions = {}
+    if width is not None:
+        dimensions["width"] = width
+    if height is not None:
+        dimensions["height"] = height
+
     st.data_editor(
         state.editor_table,
         hide_index=True,
@@ -100,7 +115,9 @@ def table_filter(
         key=state.editor_key,
         on_change=_update_selection,
         args=(state_key, state.editor_key),
+        **dimensions,
     )
+    st.caption(f"{len(state.selected_ids)} of {len(option_ids)} selected")
 
     selected = [
         option_id for option_id in option_ids if option_id in state.selected_ids
