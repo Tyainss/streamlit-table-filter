@@ -4,6 +4,8 @@ import unittest
 
 from streamlit.testing.v1 import AppTest
 
+APP_START_TIMEOUT = 10
+
 
 class TableFilterTests(unittest.TestCase):
     def test_bulk_selection_reset_and_dynamic_options(self):
@@ -17,7 +19,7 @@ st.button("Reset", on_click=reset_table_filter, args=("countries",))
 selected = table_filter(options[mode], key="countries", initial_selection=["DE"])
 st.text(str(selected))
 st.text(str(table_filter(["rock"], key="genres")))
-""").run()
+""").run(timeout=APP_START_TIMEOUT)
 
         self.assert_selection(app, "['DE']", "['rock']")
         self.assert_selection(app.checkbox[0].check().run(), "['DE', 'PT']", "['rock']")
@@ -44,7 +46,7 @@ if changed:
     frame = frame.iloc[::-1].assign(label=["Soul (updated)", "Rock"])
 selected = table_filter(frame, key="genres", id_column="id", display_columns=["label"])
 st.text(str(selected))
-""").run()
+""").run(timeout=APP_START_TIMEOUT)
 
         self.assert_selection(app, "[2, 1]")
         self.assertEqual(app.dataframe[0].value.columns[1:].tolist(), ["label"])
@@ -69,7 +71,7 @@ selected = table_filter(
     ["DE", "PT"], key="countries", width=300, height=250 if larger else 150
 )
 st.text(str(selected))
-""").run()
+""").run(timeout=APP_START_TIMEOUT)
         self.assert_selection(app, "['DE', 'PT']")
         self.assertEqual(app.caption[0].value, "2 of 2 selected")
         self.edit_first_table(app, {0: False})
@@ -95,7 +97,7 @@ selected = table_filter(
     initial_selection=[],
 )
 st.text(str(selected))
-""").run()
+""").run(timeout=APP_START_TIMEOUT)
         self.assert_selection(app, "[]")
         self.edit_first_table(app, {1: True})
         self.assert_selection(app, "[2]")
