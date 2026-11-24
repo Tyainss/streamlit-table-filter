@@ -54,7 +54,7 @@ selected_genres = table_filter(
 
 The filter displays both columns but only returns the values from `id_column`. You can also use a separate ID column and hide it with `display_columns`.
 
-Polars DataFrames work the same way if you already have Polars installed.
+Polars DataFrames work the same way. To install Polars with the package, run `pip install "streamlit-table-filter[polars]"`.
 
 ## Using it in a dashboard
 
