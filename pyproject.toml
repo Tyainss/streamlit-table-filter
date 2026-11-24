@@ -1,12 +1,21 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
 name = "streamlit-table-filter"
 version = "0.1.0"
-description = "Checkbox table filters for Streamlit apps."
+description = "A table-based multi-select filter for Streamlit apps."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["streamlit", "dashboard", "filter", "multiselect", "checkbox", "table"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 requires-python = ">=3.10"
 dependencies = ["pandas>=1.5.3", "streamlit>=1.40"]
 
