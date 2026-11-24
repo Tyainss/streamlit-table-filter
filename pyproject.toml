@@ -24,3 +24,13 @@ polars = ["polars"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/streamlit_table_filter"]
+
+[dependency-groups]
+dev = [
+    # pytest 9.2.0 crashes at startup on Python 3.10.0.
+    "pytest>=9.1,!=9.2.0",
+    "ruff>=0.17.6",
+]
+
+[tool.ruff.format]
+exclude = ["*.md"]
