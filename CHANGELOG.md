@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-26
+
 - Added a table filter for Streamlit with checkboxes to select rows, select all, or clear the selection.
 - Supports lists and pandas DataFrames, with optional support for Polars DataFrames.
 - Keeps selections when the app reruns and supports setting and restoring a starting selection.
