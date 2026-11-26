@@ -6,6 +6,8 @@ I like building dashboards in Streamlit, but I've never been a big fan of using 
 
 With `streamlit-table-filter`, you can see your options in a table, select or deselect them with checkboxes, and display extra information alongside each option (e.g. the number of orders per country or plays per artist).
 
+![Streamlit Table Filter demo](https://raw.githubusercontent.com/Tyainss/streamlit-table-filter/main/docs/demo.gif)
+
 ## Installation
 
 ```bash
