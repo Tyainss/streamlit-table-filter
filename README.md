@@ -126,8 +126,8 @@ pip install .
 streamlit run examples/demo.py
 ```
 
-Requires Python 3.10+ and Streamlit 1.40+. The filter works in sidebars and expanders, but not inside `st.form`.
+Requires Python 3.10+ and Streamlit 1.40+.
 
 ## License
 
-MIT
+[MIT](LICENSE)
